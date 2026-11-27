@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101216">
+<meta name="description" content="Forge Fitness — your four-day workout tracker.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Forge Fitness</title>
+<style>
+:root{color-scheme:dark;--bg:#101216;--panel:#20242b;--panel2:#282e36;--muted:#a1a5ad;--lime:#d9ff3f;--line:#3a4049;--white:#f6f7f8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--white);font:15px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit}button{cursor:pointer}.app{max-width:760px;margin:auto;padding:env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;justify-content:space-between;padding:20px 0 14px}.brand{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:13px;background:var(--lime);color:#111;display:grid;place-items:center;font-size:23px;font-weight:900}.brand h1{font-size:18px;letter-spacing:.06em;margin:0}.brand small{color:var(--muted);font-size:10px;letter-spacing:.12em}.pill{border:1px solid #536126;color:var(--lime);border-radius:999px;padding:5px 9px;font-size:11px;font-weight:700}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat,.panel{background:var(--panel);border:1px solid #2b3038;border-radius:16px;padding:14px}.stat span{color:var(--muted);font-size:11px;letter-spacing:.06em}.stat strong{display:block;font-size:27px;margin-top:3px}.lime{color:var(--lime)}.progress{height:7px;background:#343a43;border-radius:99px;overflow:hidden;margin:12px 0 18px}.progress i{display:block;height:100%;background:var(--lime);width:0}
+nav{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:#1b1f25;padding:5px;border-radius:13px;margin:14px 0 18px}nav button{border:0;border-radius:9px;background:transparent;color:var(--muted);padding:10px 5px;font-weight:700;font-size:13px}nav button.active{background:var(--lime);color:#111}
+h2{font-size:18px;margin:12px 0}h3{font-size:14px;margin:0}.days{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0}.day{border:1px solid var(--line);background:var(--panel);color:var(--white);border-radius:11px;padding:10px 3px;font-weight:800}.day small{display:block;color:var(--muted);font-size:10px;font-weight:500;margin-top:3px}.day.active{background:var(--lime);color:#111;border-color:var(--lime)}.day.active small{color:#343b20}
+.session-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.session-head p{color:var(--lime);margin:2px 0 0;font-size:13px}.tag{font-size:10px;color:var(--lime);border:1px solid #536126;border-radius:999px;padding:4px 7px;white-space:nowrap}
+.exercise{display:flex;gap:10px;align-items:center;background:var(--panel);border:1px solid #2b3038;border-radius:13px;padding:12px;margin:8px 0}.exercise input[type=checkbox]{accent-color:var(--lime);width:19px;height:19px;flex:none}.exercise .name{font-weight:700}.exercise .meta{font-size:11px;color:var(--muted);margin-top:2px}.exercise.done{opacity:.62}.exercise.done .name{text-decoration:line-through}
+.panel{margin-top:13px}.panel p{margin:5px 0;color:#c6cad0;font-size:13px}.panel table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}.panel td,.panel th{text-align:left;padding:7px 5px;border-bottom:1px solid var(--line)}.panel th{color:var(--muted);font-weight:600}
+label{display:block;color:var(--muted);font-size:12px;margin:10px 0 5px}input[type=number],input[type=text]{width:100%;background:#15191e;border:1px solid var(--line);border-radius:10px;color:white;padding:11px;outline:none}input:focus{border-color:var(--lime)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:11px;background:var(--lime);color:#111;font-weight:800;padding:11px 14px}.btn.secondary{background:#343a43;color:white}.btn.full{width:100%;margin-top:12px}.hint{font-size:11px;color:var(--muted)}.record{background:var(--panel);border-radius:11px;padding:11px;margin-top:8px;font-size:12px}.hidden{display:none!important}.footer{text-align:center;color:#777e88;font-size:10px;padding:22px 0 4px;letter-spacing:.08em}
+@media(min-width:600px){.app{padding-left:24px;padding-right:24px}.exercise{padding:14px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="brand"><div class="logo">F</div><div><h1>FORGE FITNESS</h1><small>YOUR PERSONAL TRAINING APP</small></div></div><span class="pill">4 DAY SPLIT</span></header>
+<section class="stats"><div class="stat"><span>EXERCISES COMPLETED</span><strong class="lime" id="completed">0/24</strong></div><div class="stat"><span>WEEKLY COMPLETION</span><strong id="percent">0%</strong></div></section>
+<div class="progress"><i id="progressbar"></i></div>
+<nav><button class="active" data-tab="workout">Workout</button><button data-tab="progress">Progress</button><button data-tab="guide">Guide</button></nav>
+<section id="workout">
+<h2>Your weekly schedule</h2><div class="days" id="days"></div>
+<div class="panel"><div class="session-head"><div><h2 id="focus" style="margin:0">Chest + Triceps</h2><p id="daytitle">Monday</p></div><span class="tag" id="donecount">0/6 DONE</span></div></div>
+<h2>Exercises</h2><div id="exercises"></div>
+<div class="panel"><h3>⚡ CARDIO FINISHER</h3><h2 id="cardio" style="margin:5px 0">Treadmill</h2><p id="cardiodetails"></p><div id="treadmill"></div></div>
+<button class="btn secondary full" id="resetday">Reset this day</button>
+</section>
+<section id="progress" class="hidden">
+<h2>Strength tracker</h2><p class="hint">Enter your current estimated one-rep max (1RM) in pounds. Don't test a max just to fill this in.</p>
+<div class="panel">
+<div class="row"><div><label for="bench">Bench press 1RM (lb)</label><input id="bench" type="number" min="0" placeholder="e.g. 135"></div><div><label for="squat">Back squat 1RM (lb)</label><input id="squat" type="number" min="0" placeholder="e.g. 185"></div></div>
+<label for="deadlift">Deadlift 1RM (lb)</label><input id="deadlift" type="number" min="0" placeholder="e.g. 225">
+<button class="btn full" id="saveweights">Save maxes & calculate working weights</button><div id="calculations"></div>
+</div>
+<h2>Workout log</h2><div class="panel"><label for="logexercise">Exercise / lift</label><input id="logexercise" type="text" placeholder="e.g. Bench press"><div class="row"><div><label for="logweight">Weight (lb)</label><input id="logweight" type="number" min="0" placeholder="e.g. 95"></div><div><label for="logreps">Reps completed</label><input id="logreps" type="number" min="0" placeholder="e.g. 8"></div></div><button class="btn full" id="addlog">Add progress entry</button><div id="logs"></div></div>
+</section>
+<section id="guide" class="hidden">
+<h2>Lifting percentage guide</h2><div class="panel"><table><tr><th>Percent of 1RM</th><th>Purpose</th></tr><tr><td>40–50%</td><td>Light warm-up / technique</td></tr><tr><td>55–65%</td><td>Build-up warm-up sets</td></tr><tr><td>65–75%</td><td>Main working range for bench, squat and deadlift</td></tr><tr><td>80–85%</td><td>Heavier strength work; not required here</td></tr><tr><td>90–100%</td><td>Near-max effort; avoid routine max attempts</td></tr></table><p><b>Example:</b> If your 1RM is 100 lb, 65–75% is 65–75 lb.</p></div>
+<h2>Treadmill settings</h2><div class="panel"><table><tr><th>Stage</th><th>Incline</th><th>Speed</th></tr><tr><td>Warm-up (3–5 min)</td><td>0–2%</td><td>2.0–2.5 mph</td></tr><tr><td>Main walk</td><td>5–8%</td><td>2.5–3.0 mph</td></tr><tr><td>Optional progression</td><td>8–12%</td><td>2.5–3.2 mph</td></tr><tr><td>Cool-down (3–5 min)</td><td>0–2%</td><td>Easy pace</td></tr></table><p>Use a comfortable pace where you can speak in short sentences. Lower the speed or incline if you feel dizzy, uncomfortable, or need to hold the rails.</p></div>
+<h2>Training rules</h2><div class="panel"><p>• Bench, squat and deadlift: rest 2–3 minutes.</p><p>• Other exercises: rest 60–90 seconds.</p><p>• Choose accessory weights that leave 2–3 good reps in reserve.</p><p>• Increase weights gradually only when your form stays solid.</p><p>• Cardio goal: up to 200–300 calories, but machine estimates vary. Don't force the number.</p></div>
+<h2>Weekly recovery</h2><div class="panel"><p>Monday workout · Tuesday workout · Wednesday rest · Thursday workout · Friday rest · Saturday workout · Sunday rest.</p></div>
+</section>
+<div class="footer">FORGE FITNESS · TRAIN SMART · PROGRESS STEADILY</div>
+</div>
+<script>
+const plan=[
+{day:"Monday",short:"MON",focus:"Chest + Triceps",cardio:"Treadmill",duration:"20–30 min",cal:"200–300 cal",ex:[["Barbell Bench Press","4 × 8–10","65–75% 1RM"],["Incline Dumbbell Press","3 × 10–12","2–3 reps in reserve"],["Chest Fly Machine","3 × 12","2–3 reps in reserve"],["Cable Chest Fly","2 × 12–15","2–3 reps in reserve"],["Triceps Pushdowns","3 × 12","2–3 reps in reserve"],["Overhead Triceps Extensions","3 × 10–12","2–3 reps in reserve"]]},
+{day:"Tuesday",short:"TUE",focus:"Back + Biceps + Deadlift",cardio:"Stationary Bike",duration:"20–30 min",cal:"200–300 cal",ex:[["Conventional Deadlift","3 × 5","65–75% 1RM"],["Lat Pulldowns","3 × 10–12","2–3 reps in reserve"],["Seated Cable Rows","3 × 10–12","2–3 reps in reserve"],["Chest-Supported Rows","3 × 10","2–3 reps in reserve"],["Dumbbell Bicep Curls","3 × 12","2–3 reps in reserve"],["Hammer Curls","2 × 12","2–3 reps in reserve"]]},
+{day:"Thursday",short:"THU",focus:"Legs + Squat",cardio:"Treadmill",duration:"15–25 min",cal:"200–300 cal",ex:[["Barbell Back Squat","4 × 6–8","65–75% 1RM"],["Leg Press","3 × 10–12","2–3 reps in reserve"],["Romanian Deadlift","3 × 10","2–3 reps in reserve"],["Leg Extensions","3 × 12","2–3 reps in reserve"],["Lying Leg Curls","3 × 12","2–3 reps in reserve"],["Standing Calf Raises","3 × 15","2–3 reps in reserve"]]},
+{day:"Saturday",short:"SAT",focus:"Shoulders + Upper Body",cardio:"Elliptical",duration:"20–30 min",cal:"200–300 cal",ex:[["Seated Dumbbell Shoulder Press","3 × 8–10","2–3 reps in reserve"],["Dumbbell Lateral Raises","3 × 12–15","2–3 reps in reserve"],["Rear Delt Fly Machine","3 × 12","2–3 reps in reserve"],["Incline Chest Press Machine","3 × 10","2–3 reps in reserve"],["Face Pulls","3 × 12–15","2–3 reps in reserve"],["Plank","3 × 30–60 sec","Bodyweight"]]}
+];
+const key="forgeFitnessDataV1";let data=JSON.parse(localStorage.getItem(key)||'{"checks":{},"weights":{},"logs":[]}');let selected=0;
+function save(){localStorage.setItem(key,JSON.stringify(data));renderStats()}
+function renderStats(){let total=plan.reduce((n,d)=>n+d.ex.length,0),done=Object.values(data.checks).filter(Boolean).length;document.getElementById("completed").textContent=done+"/"+total;document.getElementById("percent").textContent=Math.round(done/total*100)+"%";document.getElementById("progressbar").style.width=(done/total*100)+"%"}
+function renderDays(){document.getElementById("days").innerHTML=plan.map((d,i)=>`<button class="day ${i===selected?'active':''}" data-day="${i}">${d.short}<small>${d.ex.filter(e=>data.checks[d.day+"|"+e[0]]).length}/${d.ex.length}</small></button>`).join("");document.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{selected=+b.dataset.day;renderWorkout()})}
+function renderWorkout(){let d=plan[selected];renderDays();document.getElementById("focus").textContent=d.focus;document.getElementById("daytitle").textContent=d.day;let count=d.ex.filter(e=>data.checks[d.day+"|"+e[0]]).length;document.getElementById("donecount").textContent=count+"/"+d.ex.length+" DONE";document.getElementById("exercises").innerHTML=d.ex.map(e=>{let k=d.day+"|"+e[0],v=!!data.checks[k];return `<label class="exercise ${v?'done':''}"><input type="checkbox" data-check="${encodeURIComponent(k)}" ${v?'checked':''}><span><span class="name">${e[0]}</span><span class="meta">${e[1]} · ${e[2]}</span></span></label>`}).join("");document.querySelectorAll("[data-check]").forEach(c=>c.onchange=()=>{data.checks[decodeURIComponent(c.dataset.check)]=c.checked;save();renderWorkout()});document.getElementById("cardio").textContent=d.cardio;document.getElementById("cardiodetails").textContent=d.duration+" · target "+d.cal+" (estimate; adjust to your fitness level).";document.getElementById("treadmill").innerHTML=d.cardio==="Treadmill"?`<table><tr><th>Stage</th><th>Incline</th><th>Speed</th></tr><tr><td>Warm-up</td><td>0–2%</td><td>2.0–2.5 mph</td></tr><tr><td>Main walk</td><td>5–8%</td><td>2.5–3.0 mph</td></tr><tr><td>Optional progression</td><td>8–12%</td><td>2.5–3.2 mph</td></tr><tr><td>Cool-down</td><td>0–2%</td><td>Easy pace</td></tr></table>`:"<p>Use moderate, steady resistance. You should be able to speak in short sentences.</p>";}
+function renderProgress(){["bench","squat","deadlift"].forEach(k=>document.getElementById(k).value=data.weights[k]||"");let labels={bench:"Bench press",squat:"Back squat",deadlift:"Deadlift"};document.getElementById("calculations").innerHTML=Object.keys(labels).filter(k=>+data.weights[k]>0).map(k=>`<div class="record"><b>${labels[k]}</b>: 65% = ${Math.round(data.weights[k]*.65)} lb · 75% = ${Math.round(data.weights[k]*.75)} lb</div>`).join("");document.getElementById("logs").innerHTML=data.logs.slice().reverse().map(l=>`<div class="record"><b>${l.exercise}</b> · ${l.weight} lb × ${l.reps} reps <span class="hint">· ${l.date}</span></div>`).join("")||'<p class="hint">No entries yet. Add your first workout below.</p>'}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x===b));["workout","progress","guide"].forEach(id=>document.getElementById(id).classList.toggle("hidden",id!==b.dataset.tab));if(b.dataset.tab==="progress")renderProgress()});
+document.getElementById("resetday").onclick=()=>{if(confirm("Clear the checkmarks for "+plan[selected].day+"?")){plan[selected].ex.forEach(e=>delete data.checks[plan[selected].day+"|"+e[0]]);save();renderWorkout()}};
+document.getElementById("saveweights").onclick=()=>{["bench","squat","deadlift"].forEach(k=>data.weights[k]=document.getElementById(k).value);save();renderProgress()};
+document.getElementById("addlog").onclick=()=>{let exercise=document.getElementById("logexercise").value.trim(),weight=+document.getElementById("logweight").value,reps=+document.getElementById("logreps").value;if(!exercise||weight<=0||reps<=0){alert("Enter an exercise, a weight above zero, and reps above zero.");return}data.logs.push({exercise,weight,reps,date:new Date().toLocaleDateString()});save();document.getElementById("logexercise").value="";document.getElementById("logweight").value="";document.getElementById("logreps").value="";renderProgress()};
+renderStats();renderWorkout();
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+</script>
+</body></html>
